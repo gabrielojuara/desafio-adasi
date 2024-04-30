@@ -116,6 +116,7 @@ const TasksList = () => {
       const response = await axios.post('http://localhost:3000/v1/activities', newActivity);
       console.log('Atividade criada:', response.data);
       fetchTasks();
+      fetchActivities(); // Atualiza a lista de atividades automaticamente
     } catch (error) {
       console.error('Erro ao criar atividade:', error);
     }
@@ -126,6 +127,15 @@ const TasksList = () => {
       const response = await axios.get('http://localhost:3000/v1/activities');
       const filteredActivities = response.data.filter(activity => activity.tasks.some(task => task.id === taskId));
       setActivities(filteredActivities);
+    } catch (error) {
+      console.error('Erro ao buscar atividades:', error);
+    }
+  };
+
+  const fetchActivities = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/v1/activities');
+      setActivities(response.data);
     } catch (error) {
       console.error('Erro ao buscar atividades:', error);
     }
