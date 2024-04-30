@@ -7,9 +7,16 @@ const TasksList = () => {
   const [editTaskId, setEditTaskId] = useState(null);
   const [editTaskName, setEditTaskName] = useState('');
   const [error, setError] = useState(null);
+  const [newActivityDate, setNewActivityDate] = useState('');
+  const [newActivityScheduledStart, setNewActivityScheduledStart] = useState('');
+  const [newActivityScheduledEnd, setNewActivityScheduledEnd] = useState('');
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [selectedStudentCpf, setSelectedStudentCpf] = useState('');
 
   useEffect(() => {
     fetchTasks();
+    fetchStudents();
   }, []);
 
   const fetchTasks = async () => {
@@ -65,6 +72,52 @@ const TasksList = () => {
   const handleEditClick = (taskId, taskName) => {
     setEditTaskId(taskId);
     setEditTaskName(taskName);
+  };
+
+  const handleCreateActivityClick = (taskId) => {
+    setSelectedTaskId(taskId);
+  };
+
+  const handleActivityDateChange = (e) => {
+    setNewActivityDate(e.target.value);
+  };
+
+  const handleActivityScheduledStartChange = (e) => {
+    setNewActivityScheduledStart(e.target.value);
+  };
+
+  const handleActivityScheduledEndChange = (e) => {
+    setNewActivityScheduledEnd(e.target.value);
+  };
+
+  const fetchStudents = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/v1/students');
+      setStudents(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar estudantes:', error);
+    }
+  };
+
+  const handleStudentChange = (e) => {
+    setSelectedStudentCpf(e.target.value);
+  };
+
+  const handleCreateActivity = async () => {
+    try {
+      const newActivity = {
+        studentCpf: selectedStudentCpf,
+        date: newActivityDate,
+        scheduledStart: newActivityScheduledStart,
+        scheduledEnd: newActivityScheduledEnd,
+        taskIds: [selectedTaskId],
+      };
+      const response = await axios.post('http://localhost:3000/v1/activities', newActivity);
+      console.log('Atividade criada:', response.data);
+      fetchTasks();
+    } catch (error) {
+      console.error('Erro ao criar atividade:', error);
+    }
   };
 
   if (error) {
@@ -131,16 +184,79 @@ const TasksList = () => {
                   </button>
                 )}
                 <button
-                  className="btn btn-danger btn-sm"
+                  className="btn btn-danger btn-sm mr-2"
                   onClick={() => handleDeleteTask(task.id)}
                 >
                   Excluir
+                </button>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => handleCreateActivityClick(task.id)}
+                >
+                  Criar Atividade
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {selectedTaskId && (
+        <div>
+          <h2>Criar Atividade</h2>
+          <div className="mb-3">
+            <label htmlFor="activityDate">Data:</label>
+            <input
+              type="datetime-local"
+              id="activityDate"
+              value={newActivityDate}
+              onChange={handleActivityDateChange}
+              className="form-control mr-2"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="activityScheduledStart">Início Agendado:</label>
+            <input
+              type="datetime-local"
+              id="activityScheduledStart"
+              value={newActivityScheduledStart}
+              onChange={handleActivityScheduledStartChange}
+              className="form-control mr-2"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="activityScheduledEnd">Fim Agendado:</label>
+            <input
+              type="datetime-local"
+              id="activityScheduledEnd"
+              value={newActivityScheduledEnd}
+              onChange={handleActivityScheduledEndChange}
+              className="form-control mr-2"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="studentCpf">Selecionar Estudante:</label>
+            <select
+              id="studentCpf"
+              value={selectedStudentCpf}
+              onChange={handleStudentChange}
+              className="form-control mr-2"
+            >
+              <option value="">Selecione um CPF</option>
+              {students.map(student => (
+                <option key={student.cpf} value={student.cpf}>
+                  {student.name} - {student.cpf}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            className="btn btn-primary"
+            onClick={handleCreateActivity}
+          >
+            Criar Atividade
+          </button>
+        </div>
+      )}
     </div>
   );
 };
