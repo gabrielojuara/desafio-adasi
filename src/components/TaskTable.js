@@ -13,6 +13,7 @@ const TasksList = () => {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [students, setStudents] = useState([]);
   const [selectedStudentCpf, setSelectedStudentCpf] = useState('');
+  const [activities, setActivities] = useState([]);
 
   useEffect(() => {
     fetchTasks();
@@ -120,6 +121,16 @@ const TasksList = () => {
     }
   };
 
+  const handleViewActivities = async (taskId) => {
+    try {
+      const response = await axios.get('http://localhost:3000/v1/activities');
+      const filteredActivities = response.data.filter(activity => activity.tasks.some(task => task.id === taskId));
+      setActivities(filteredActivities);
+    } catch (error) {
+      console.error('Erro ao buscar atividades:', error);
+    }
+  };
+
   if (error) {
     return <div>Erro ao buscar tarefas: {error.message}</div>;
   }
@@ -195,6 +206,12 @@ const TasksList = () => {
                 >
                   Criar Atividade
                 </button>
+                <button
+                  className="btn btn-info btn-sm"
+                  onClick={() => handleViewActivities(task.id)}
+                >
+                  Ver Atividades
+                </button>
               </td>
             </tr>
           ))}
@@ -257,6 +274,31 @@ const TasksList = () => {
           </button>
         </div>
       )}
+      <h2>Lista de Atividades</h2>
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Início Agendado</th>
+            <th>Fim Agendado</th>
+            <th>Estudante</th>
+            <th>Tarefa</th>
+          </tr>
+        </thead>
+        <tbody>
+          {activities.map(activity => (
+            <tr key={activity.id}>
+              <td>{activity.id}</td>
+              <td>{activity.date}</td>
+              <td>{activity.scheduledStart}</td>
+              <td>{activity.scheduledEnd}</td>
+              <td>{activity.student.name}</td>
+              <td>{activity.tasks.map(task => task.name).join(', ')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

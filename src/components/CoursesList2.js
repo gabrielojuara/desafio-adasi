@@ -6,7 +6,7 @@ const CoursesList = () => {
   const [students, setStudents] = useState([]);
   const [error, setError] = useState(null);
   const [selectedCourseName, setSelectedCourseName] = useState(null);
-  const [selectedCourseId, setSelectedCourseId] = useState(null); // Novo estado para armazenar o ID do curso selecionado
+  const [selectedCourseId, setSelectedCourseId] = useState(null); 
   const [newCourse, setNewCourse] = useState({
     name: '',
   });
@@ -74,7 +74,7 @@ const CoursesList = () => {
       setStudents(filteredStudents);
       const selectedCourse = courses.find(course => course.id === courseId);
       setSelectedCourseName(selectedCourse.name);
-      setSelectedCourseId(courseId); // Armazena o ID do curso selecionado
+      setSelectedCourseId(courseId);
     } catch (error) {
       console.error('Erro ao buscar estudantes:', error);
     }
@@ -94,13 +94,13 @@ const CoursesList = () => {
         cpf: newStudentCPF,
         name: newStudentName,
         registration: newStudentRegistration,
-        courseId: selectedCourseId // Use o ID do curso selecionado
+        courseId: selectedCourseId 
       });
       console.log('Estudante criado:', response.data);
       setNewStudentCPF('');
       setNewStudentName('');
       setNewStudentRegistration('');
-      fetchStudents(); // Atualize a lista de estudantes após a criação de um novo estudante
+      fetchStudents(); 
     } catch (error) {
       console.error('Erro ao criar estudante:', error);
     }
@@ -113,7 +113,7 @@ const CoursesList = () => {
         registration: editStudentRegistration
       });
       console.log('Estudante editado:', response.data);
-      fetchStudents(); // Atualize a lista de estudantes após a edição de um estudante
+      fetchStudents(); 
       setEditStudentId(null);
       setEditStudentName('');
       setEditStudentCPF('');
@@ -127,7 +127,7 @@ const CoursesList = () => {
     try {
       await axios.delete(`http://localhost:3000/v1/students/${cpf}`);
       console.log('Estudante excluído:', cpf);
-      fetchStudents(); // Atualize a lista de estudantes após a exclusão de um estudante
+      fetchStudents(); 
     } catch (error) {
       console.error('Erro ao excluir estudante:', error);
     }
@@ -148,7 +148,7 @@ const CoursesList = () => {
 
   return (
     <div>
-      <h2>Lista de Cursos</h2>
+      <h2>Cursos</h2>
       <div className="mb-3">
         <input
           type="text"
@@ -159,19 +159,19 @@ const CoursesList = () => {
           className="form-control mr-2"
         />
         <button
-          className="btn btn-primary btn-sm mr-2"
+          className="btn btn-primary btn-sm mt-2"
           onClick={handleCreateCourse}
         >
-          Criar Curso
+          Criar curso
         </button>
       </div>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nome do Curso</th>
+            <th>Nome do curso</th>
             <th>Ações</th>
-            <th>Ver Estudantes</th>
+            <th>Ver estudantes</th>
           </tr>
         </thead>
         <tbody>
@@ -193,14 +193,14 @@ const CoursesList = () => {
               <td>
                 {editCourseId === course.id ? (
                   <button
-                    className="btn btn-success btn-sm mr-2"
+                    className="btn btn-success btn-sm mr"
                     onClick={() => handleEditCourse(course.id, editCourseName)}
                   >
                     Salvar
                   </button>
                 ) : (
                   <button
-                    className="btn btn-warning btn-sm mr-2"
+                    className="btn btn-warning btn-sm mr"
                     onClick={() => setEditCourseId(course.id)}
                   >
                     Editar
@@ -218,14 +218,14 @@ const CoursesList = () => {
                   className="btn btn-info btn-sm"
                   onClick={() => handleViewStudents(course.id)}
                 >
-                  Ver Estudantes
+                  Listar alunos
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <h2>{selectedCourseName ? `Estudantes do Curso: ${selectedCourseName}` : 'Estudantes'}</h2>
+      <h2>{selectedCourseName ? `Estudantes do ${selectedCourseName}` : 'Estudantes'}</h2>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
@@ -296,7 +296,7 @@ const CoursesList = () => {
                       Editar
                     </button>
                     <button
-                      className="btn btn-danger btn-sm"
+                      className="btn btn-danger btn-sm mr-2"
                       onClick={() => handleDeleteStudent(student.cpf)}
                     >
                       Excluir
@@ -308,7 +308,7 @@ const CoursesList = () => {
           ))}
         </tbody>
       </table>
-      <h2>Criar Novo Estudante</h2>
+      <h2>Criar novo estudante</h2>
       <div className="mb-3">
         <input
           type="text"
