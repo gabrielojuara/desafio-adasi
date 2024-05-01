@@ -7,8 +7,6 @@
 </head>
 <body>
 
-  <h1>Desafio de Frontend para Conexão com a API RESTful em Node.js</h1>
-
   <p>Este projeto consiste em criar um frontend utilizando React, Axios e Bootstrap para se comunicar com a API RESTful desenvolvida em Node.js para gerenciamento de cursos, estudantes, tarefas e atividades.</p>
 
   <h2>Tecnologias Utilizadas</h2>
