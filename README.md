@@ -1,68 +1,63 @@
-# Getting Started with Create React App
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desafio de Frontend para Conexão com a API RESTful em Node.js</title>
+</head>
+<body>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  <h1>Desafio de Frontend para Conexão com a API RESTful em Node.js</h1>
 
-## Available Scripts
+  <p>Este projeto consiste em criar um frontend utilizando React, Axios e Bootstrap para se comunicar com a API RESTful desenvolvida em Node.js para gerenciamento de cursos, estudantes, tarefas e atividades.</p>
 
-In the project directory, you can run:
+  <h2>Tecnologias Utilizadas</h2>
 
-### `npm start`
+  <ul>
+    <li><strong>React:</strong> Biblioteca JavaScript para construção de interfaces de usuário.</li>
+    <li><strong>Axios:</strong> Cliente HTTP baseado em Promises para fazer requisições para a API.</li>
+    <li><strong>Bootstrap:</strong> Framework front-end para desenvolvimento de interfaces responsivas.</li>
+  </ul>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  <h2>Funcionalidades Requeridas</h2>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  <ol>
+    <li>Visualização dos cursos cadastrados.</li>
+    <li>Criação, edição e exclusão de cursos.</li>
+    <li>Visualização dos estudantes cadastrados em cada curso.</li>
+    <li>Criação, edição e exclusão de estudantes.</li>
+    <li>Visualização das tarefas cadastradas.</li>
+    <li>Criação, edição e exclusão de tarefas.</li>
+    <li>Visualização das atividades cadastradas, incluindo o início e término de cada atividade.</li>
+  </ol>
 
-### `npm test`
+  <h2>Regras de Negócio</h2>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  <ul>
+    <li><strong>Duração da Atividade:</strong> A duração da atividade não pode ultrapassar 6 horas.</li>
+    <li><strong>Datas e Horários de Término:</strong> Data e hora de término não podem ser anteriores à data e hora de início.</li>
+    <li><strong>Tolerância de Início:</strong> Uma atividade só pode ser iniciada com uma tolerância de 15 minutos para mais ou para menos.</li>
+    <li><strong>Encerramento da Atividade:</strong> Uma atividade pode ser encerrada a qualquer momento após o início.</li>
+  </ul>
 
-### `npm run build`
+  <h2>Requisitos Não Funcionais</h2>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  <ul>
+    <li><strong>Responsividade:</strong> O frontend deve ser responsivo para garantir uma boa experiência de usuário em dispositivos móveis e desktop.</li>
+    <li><strong>Documentação:</strong> Documentar as principais funcionalidades do frontend, incluindo como executar o projeto localmente e quaisquer instruções relevantes.</li>
+  </ul>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  <h2>Entrega</h2>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  <p>A entrega do desafio deve incluir:</p>
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
+  <ol>
+    <li>Código-fonte do frontend em um repositório Git (público ou privado).</li>
+    <li>Instruções claras de como configurar e executar o projeto localmente.</li>
+    <li>Qualquer documentação relevante para facilitar o entendimento e execução do projeto.</li>
+  </ol>
+  </body>
+</html>
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
 ### `npm run build` fails to minify
