@@ -14,6 +14,9 @@ const TasksList = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudentCpf, setSelectedStudentCpf] = useState('');
   const [activities, setActivities] = useState([]);
+  const [durationError, setDurationError] = useState(false);
+  const [dateTimeError, setDateTimeError] = useState(false);
+  const [startToleranceError, setStartToleranceError] = useState(false);
 
   useEffect(() => {
     fetchTasks();
@@ -84,11 +87,31 @@ const TasksList = () => {
   };
 
   const handleActivityScheduledStartChange = (e) => {
+    const startDateTime = new Date(e.target.value);
+    const endDateTime = new Date(newActivityScheduledEnd);
     setNewActivityScheduledStart(e.target.value);
+    setDateTimeError(startDateTime > endDateTime);
+    setDurationError(checkDuration(startDateTime, endDateTime));
+    setStartToleranceError(checkStartTolerance(startDateTime));
+  };
+
+  const checkDuration = (startDateTime, endDateTime) => {
+    const diffInHours = Math.abs(endDateTime - startDateTime) / 36e5;
+    return diffInHours > 6;
+  };
+
+  const checkStartTolerance = (startDateTime) => {
+    const currentDateTime = new Date();
+    const diffInMinutes = Math.abs(startDateTime - currentDateTime) / 60000;
+    return diffInMinutes > 15;
   };
 
   const handleActivityScheduledEndChange = (e) => {
+    const startDateTime = new Date(newActivityScheduledStart);
+    const endDateTime = new Date(e.target.value);
     setNewActivityScheduledEnd(e.target.value);
+    setDateTimeError(startDateTime > endDateTime);
+    setDurationError(checkDuration(startDateTime, endDateTime));
   };
 
   const fetchStudents = async () => {
@@ -116,7 +139,7 @@ const TasksList = () => {
       const response = await axios.post('http://localhost:3000/v1/activities', newActivity);
       console.log('Atividade criada:', response.data);
       fetchTasks();
-      fetchActivities(); // Atualiza a lista de atividades automaticamente
+      fetchActivities();
     } catch (error) {
       console.error('Erro ao criar atividade:', error);
     }
@@ -247,8 +270,10 @@ const TasksList = () => {
               id="activityScheduledStart"
               value={newActivityScheduledStart}
               onChange={handleActivityScheduledStartChange}
-              className="form-control mr-2"
+              className={`form-control mr-2 ${dateTimeError || startToleranceError ? 'is-invalid' : ''}`}
             />
+            {dateTimeError && <div className="invalid-feedback">A data e hora de início deve ser anterior à data e hora de término.</div>}
+            {startToleranceError && <div className="invalid-feedback">A atividade só pode ser iniciada com uma tolerância de 15 minutos para mais ou para menos.</div>}
           </div>
           <div className="mb-3">
             <label htmlFor="activityScheduledEnd">Fim Agendado:</label>
@@ -257,8 +282,10 @@ const TasksList = () => {
               id="activityScheduledEnd"
               value={newActivityScheduledEnd}
               onChange={handleActivityScheduledEndChange}
-              className="form-control mr-2"
+              className={`form-control mr-2 ${dateTimeError || durationError ? 'is-invalid' : ''}`}
             />
+            {dateTimeError && <div className="invalid-feedback">A data e hora de término deve ser posterior à data e hora de início.</div>}
+            {durationError && <div className="invalid-feedback">A duração da atividade não pode ser superior a 6 horas.</div>}
           </div>
           <div className="mb-3">
             <label htmlFor="studentCpf">Selecionar Estudante:</label>
