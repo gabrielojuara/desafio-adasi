@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desafio de Frontend para Conexão com a API RESTful em Node.js</title>
+  <h1>Desafio de Frontend para Conexão com a API RESTful em Node.js</h1>
 </head>
 <body>
 
@@ -58,8 +58,3 @@
   </ol>
   </body>
 </html>
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
