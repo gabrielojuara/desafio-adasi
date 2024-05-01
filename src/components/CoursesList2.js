@@ -6,7 +6,7 @@ const CoursesList = () => {
   const [students, setStudents] = useState([]);
   const [error, setError] = useState(null);
   const [selectedCourseName, setSelectedCourseName] = useState(null);
-  const [selectedCourseId, setSelectedCourseId] = useState(null); 
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [newCourse, setNewCourse] = useState({
     name: '',
   });
@@ -19,6 +19,7 @@ const CoursesList = () => {
   const [newStudentCPF, setNewStudentCPF] = useState('');
   const [newStudentName, setNewStudentName] = useState('');
   const [newStudentRegistration, setNewStudentRegistration] = useState('');
+  const [showCoursesList, setShowCoursesList] = useState(true); 
 
   useEffect(() => {
     fetchCourses();
@@ -75,6 +76,8 @@ const CoursesList = () => {
       const selectedCourse = courses.find(course => course.id === courseId);
       setSelectedCourseName(selectedCourse.name);
       setSelectedCourseId(courseId);
+      
+      setShowCoursesList(false);
     } catch (error) {
       console.error('Erro ao buscar estudantes:', error);
     }
@@ -94,13 +97,13 @@ const CoursesList = () => {
         cpf: newStudentCPF,
         name: newStudentName,
         registration: newStudentRegistration,
-        courseId: selectedCourseId 
+        courseId: selectedCourseId
       });
       console.log('Estudante criado:', response.data);
       setNewStudentCPF('');
       setNewStudentName('');
       setNewStudentRegistration('');
-      fetchStudents(); 
+      fetchStudents();
     } catch (error) {
       console.error('Erro ao criar estudante:', error);
     }
@@ -113,7 +116,7 @@ const CoursesList = () => {
         registration: editStudentRegistration
       });
       console.log('Estudante editado:', response.data);
-      fetchStudents(); 
+      fetchStudents();
       setEditStudentId(null);
       setEditStudentName('');
       setEditStudentCPF('');
@@ -127,7 +130,7 @@ const CoursesList = () => {
     try {
       await axios.delete(`http://localhost:3000/v1/students/${cpf}`);
       console.log('Estudante excluído:', cpf);
-      fetchStudents(); 
+      fetchStudents();
     } catch (error) {
       console.error('Erro ao excluir estudante:', error);
     }
@@ -148,83 +151,96 @@ const CoursesList = () => {
 
   return (
     <div>
-      <h2>Cursos</h2>
-      <div className="mb-3">
-        <input
-          type="text"
-          name="name"
-          placeholder="Nome do Curso"
-          value={newCourse.name}
-          onChange={handleInputChange}
-          className="form-control mr-2"
-        />
+      
+      {showCoursesList ? (
+        <>
+          <h2>Cursos</h2>
+          <div className="mb-3">
+            <input
+              type="text"
+              name="name"
+              placeholder="Nome do Curso"
+              value={newCourse.name}
+              onChange={handleInputChange}
+              className="form-control mr-2"
+            />
+            <button
+              className="btn btn-primary btn-sm mt-2"
+              onClick={handleCreateCourse}
+            >
+              Criar curso
+            </button>
+          </div>
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome do curso</th>
+                <th>Ações</th>
+                <th>Ver estudantes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map(course => (
+                <tr key={course.id}>
+                  <td>{course.id}</td>
+                  <td>
+                    {editCourseId === course.id ? (
+                      <input
+                        type="text"
+                        value={editCourseName}
+                        onChange={(e) => setEditCourseName(e.target.value)}
+                        className="form-control"
+                      />
+                    ) : (
+                      course.name
+                    )}
+                  </td>
+                  <td>
+                    {editCourseId === course.id ? (
+                      <button
+                        className="btn btn-success btn-sm mr"
+                        onClick={() => handleEditCourse(course.id, editCourseName)}
+                      >
+                        Salvar
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-warning btn-sm mr"
+                        onClick={() => setEditCourseId(course.id)}
+                      >
+                        Editar
+                      </button>
+                    )}
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDeleteCourse(course.id)}
+                    >
+                      Excluir
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-info btn-sm"
+                      onClick={() => handleViewStudents(course.id)}
+                    >
+                      Listar alunos
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        
         <button
-          className="btn btn-primary btn-sm mt-2"
-          onClick={handleCreateCourse}
+          className="btn btn-primary"
+          onClick={() => setShowCoursesList(true)}
         >
-          Criar curso
+          Voltar
         </button>
-      </div>
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome do curso</th>
-            <th>Ações</th>
-            <th>Ver estudantes</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map(course => (
-            <tr key={course.id}>
-              <td>{course.id}</td>
-              <td>
-                {editCourseId === course.id ? (
-                  <input
-                    type="text"
-                    value={editCourseName}
-                    onChange={(e) => setEditCourseName(e.target.value)}
-                    className="form-control"
-                  />
-                ) : (
-                  course.name
-                )}
-              </td>
-              <td>
-                {editCourseId === course.id ? (
-                  <button
-                    className="btn btn-success btn-sm mr"
-                    onClick={() => handleEditCourse(course.id, editCourseName)}
-                  >
-                    Salvar
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-warning btn-sm mr"
-                    onClick={() => setEditCourseId(course.id)}
-                  >
-                    Editar
-                  </button>
-                )}
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDeleteCourse(course.id)}
-                >
-                  Excluir
-                </button>
-              </td>
-              <td>
-                <button
-                  className="btn btn-info btn-sm"
-                  onClick={() => handleViewStudents(course.id)}
-                >
-                  Listar alunos
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      )}
       <h2>{selectedCourseName ? `Estudantes do ${selectedCourseName}` : 'Estudantes'}</h2>
       <table className="table table-striped table-bordered">
         <thead>
